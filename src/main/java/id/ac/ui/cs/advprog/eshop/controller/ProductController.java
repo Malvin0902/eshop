@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -24,7 +26,13 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProductPost(@ModelAttribute Product product, Model model) {
+    public String createProductPost(@Valid @ModelAttribute Product product,
+                                    BindingResult result,
+                                    Model model) {
+        if (result.hasErrors()) {
+            // Return back to the create form if validation fails
+            return "createProduct";
+        }
         service.create(product);
         return "redirect:list";
     }
@@ -45,8 +53,14 @@ public class ProductController {
         model.addAttribute("product", product);
         return "EditProduct";
     }
+
     @PostMapping("/edit")
-    public String editProductPost(@ModelAttribute Product product) {
+    public String editProductPost(@Valid @ModelAttribute Product product,
+                                  BindingResult result) {
+        if (result.hasErrors()) {
+            // Return back to the edit form if validation fails
+            return "EditProduct";
+        }
         service.update(product);
         return "redirect:list";
     }
