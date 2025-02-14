@@ -1,6 +1,6 @@
 # eshop
 
-## Reflection 1 
+## Reflection 1
 
 ### Clean Code Principles
 - **Meaningful Names**: The names of classes and methods clearly represent their intended function.
