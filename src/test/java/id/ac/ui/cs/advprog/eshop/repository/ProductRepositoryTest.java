@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,6 +35,16 @@ class ProductRepositoryTest {
         assertEquals(product.getProductId(), savedProduct.getProductId());
         assertEquals(product.getProductName(), savedProduct.getProductName());
         assertEquals(product.getProductQuantity(), savedProduct.getProductQuantity());
+    }
+
+    @Test
+    void testCreateProductWithNullId() {
+        Product product = new Product();
+        product.setProductName("Test Product");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        assertNotNull(product.getProductId(), "Product ID should not be null");
     }
 
     @Test
@@ -83,6 +92,7 @@ class ProductRepositoryTest {
         assertEquals("Updated Name", result.getProductName());
         assertEquals(200, result.getProductQuantity());
     }
+
     @Test
     void testEditProductPartialUpdate() {
         Product product = new Product();
@@ -99,6 +109,7 @@ class ProductRepositoryTest {
         assertEquals("Updated Name", result.getProductName());
         assertEquals(100, result.getProductQuantity());
     }
+
     @Test
     void testEditProductNotFound() {
         Product nonExistentProduct = new Product();
@@ -108,6 +119,7 @@ class ProductRepositoryTest {
         Product result = productRepository.update(nonExistentProduct);
         assertNull(result);
     }
+
     @Test
     void testDeleteProductSuccess() {
         Product product = new Product();
@@ -118,6 +130,7 @@ class ProductRepositoryTest {
         productRepository.delete(product.getProductId());
         assertNull(productRepository.findById(product.getProductId()));
     }
+
     @Test
     void testDeleteProductWithMultipleProducts() {
         Product product1 = new Product();
@@ -137,6 +150,14 @@ class ProductRepositoryTest {
         assertEquals("id-2", remainingProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+
+    @Test
+    void testDeleteNonExistentProduct() {
+        productRepository.delete("non-existent-id");
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertFalse(productIterator.hasNext(), "Product list should be empty if no matching product is found to delete");
+    }
+
     @Test
     void testFindByIdSuccess() {
         Product product = new Product();
@@ -149,9 +170,84 @@ class ProductRepositoryTest {
         assertEquals(product.getProductName(), result.getProductName());
         assertEquals(product.getProductQuantity(), result.getProductQuantity());
     }
+
     @Test
     void testFindByIdNotFound() {
         Product result = productRepository.findById("non-existent-id");
-        assertNull(result);
+        assertNull(result, "Product should be null when not found");
+
+        result = productRepository.findById(null);
+        assertNull(result, "Product should be null when productId is null");
+    }
+
+    @Test
+    void testFindByIdNonMatchingId() {
+        Product product = new Product();
+        product.setProductId("test-id");
+        product.setProductName("Test Product");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product result = productRepository.findById("non-matching-id");
+        assertNull(result, "Product should be null when IDs do not match");
+    }
+
+    @Test
+    void testFindByIdWithNullProductId() {
+        Product product = new Product();
+        product.setProductId(null);  // Set the productId to null
+        product.setProductName("Test Product");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product result = productRepository.findById("non-matching-id");
+        assertNull(result, "Product should be null when productId is null");
+    }
+
+    @Test
+    void testUpdateWithNullProductId() {
+        Product product = new Product();
+        product.setProductId(null);  // Set to null for testing
+        product.setProductName("Test Product");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("new-id");
+        updatedProduct.setProductName("Updated Name");
+        updatedProduct.setProductQuantity(150);
+
+        Product result = productRepository.update(updatedProduct);
+        assertNull(result, "Update should return null when productId is null and doesn't match");
+    }
+
+    @Test
+    void testUpdateProductWithNonMatchingId() {
+        Product product = new Product();
+        product.setProductId("existing-id");
+        product.setProductName("Test Product");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        Product updatedProduct = new Product();
+        updatedProduct.setProductId("non-matching-id");
+        updatedProduct.setProductName("Updated Name");
+        updatedProduct.setProductQuantity(150);
+
+        Product result = productRepository.update(updatedProduct);
+        assertNull(result, "Update should return null when IDs don't match");
+    }
+
+    @Test
+    void testDeleteWithNullProductId() {
+        Product product = new Product();
+        product.setProductId(null);  // Set to null
+        product.setProductName("Test Product");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        productRepository.delete("non-matching-id");
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertTrue(productIterator.hasNext(), "Product list should not be empty when trying to delete with non-matching id");
     }
 }
