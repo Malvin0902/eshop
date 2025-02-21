@@ -1,4 +1,7 @@
 # eshop
+https://perfect-rabbit-malv-9750a611.koyeb.app/
+
+https://perfect-rabbit-malv-9750a611.koyeb.app/product/list
 ## Module 1
 ## Reflection 1
 
