@@ -1,0 +1,39 @@
+name: Code Analysis using PMD
+
+on:
+  push:
+    branches:
+      - '*'
+
+permissions:
+  contents: read
+  security-events: write
+  actions: write
+
+jobs:
+  pmd:
+    name: Run PMD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Scanning code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Run PMD
+        uses: pmd/pmd-github-action@v2
+        with:
+          version: '7.0.0-rc4'
+          sourcePath: 'src/'
+          rulesets: 'rulesets/java/quickstart.xml,ruleset.xml'
+          analyzeModifiedFilesOnly: false
+
+      - name: Upload PMD report
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: pmd-report.sarif
