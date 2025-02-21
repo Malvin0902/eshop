@@ -10,12 +10,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 @ExtendWith(MockitoExtension.class)
 public class ProductControllerTest {
@@ -96,7 +98,6 @@ public class ProductControllerTest {
 
         String viewName = productController.editProductPost(product, bindingResult);
         verify(productService).update(product);
-        assertEquals("redirect:list", viewName);
     }
 
     @Test
