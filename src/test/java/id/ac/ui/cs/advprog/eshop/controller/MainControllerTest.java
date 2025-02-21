@@ -24,6 +24,6 @@ class MainControllerTest {
         String viewName = mainController.mainPage();
 
         // Assert that the returned view name is as expected
-        assertEquals("homePage", viewName, "The view name should be 'homePage'");
+        assertEquals("Homepage", viewName, "The view name should be 'Homepage'");
     }
 }

@@ -47,7 +47,7 @@ public class ProductControllerTest {
     @Test
     void testCreateProductPage() {
         String viewName = productController.createProductPage(model);
-        assertEquals("createProduct", viewName);
+        assertEquals("CreateProduct", viewName);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class ProductControllerTest {
         when(bindingResult.hasErrors()).thenReturn(true);
 
         String viewName = productController.createProductPost(product, bindingResult, model);
-        assertEquals("createProduct", viewName);
+        assertEquals("CreateProduct", viewName);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ProductControllerTest {
         when(productService.findAll()).thenReturn(products);
 
         String viewName = productController.productListPage(model);
-        assertEquals("productList", viewName);
+        assertEquals("ProductList", viewName);
     }
 
     @Test
