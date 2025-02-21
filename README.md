@@ -1,5 +1,5 @@
 # eshop
-
+## Module 1
 ## Reflection 1
 
 ### Clean Code Principles
@@ -90,3 +90,36 @@ For our new functional test suite, which checks things like creating products an
 - **Use a Base Functional Test Class:** Put common logic (like driver setup or form-filling steps) into a parent class.
 - **Maintain Meaningful Test Names:** The test name should explain what’s being verified and the expected outcome.
 - **Don’t Rely on Coverage Alone:** Use coverage to find untested parts, but remember it doesn’t mean everything’s fully tested just because the code runs.
+
+## Module 2
+### Reflection 
+#### Fixed Code Quality Issues
+1. JUnit 5 Test Method Naming Convention:
+   
+Issue: The JUnit 5 test methods testFindById_NotFound and pageTitle_isCorrect didn't adhere to the naming convention [a-z][a-zA-Z0-9]*, meaning they had underscores in the method name. 
+
+Fix: Renamed the methods to use camel case and removed underscores,  
+such as:
+  testFindById_NotFound → testFindByIdNotFound
+
+2. Unused Static Import Warning:
+
+Issue: The static import org.junit.jupiter.api.Assertions.* was flagged as unused.  
+
+Fix: Modified it to import only the specific assertion methods that were being used in the test (such as assertNotNull, assertEquals, etc.).
+
+
+#### CI/CD Workflows 
+
+
+Looking at the CI/CD workflows (GitHub Actions in this case), I think the current setup totally fits the definition of Continuous Integration (CI) and Continuous Deployment (CD).
+
+##### Continuous Integration (CI): 
+With GitHub Actions, every time there’s a push or pull request to any branch, the workflows automatically run. This helps make sure that all code changes are tested and integrated continuously, avoiding any integration issues.
+
+##### Continuous Deployment (CD): 
+For deployment, Koyeb takes care of it automatically. Whenever there’s a push or pull request, the project gets deployed right away, so the latest updates are live without having to do anything manually.
+
+In short, everything’s set up to keep things automated, from testing and integrating code to pushing updates straight to production.
+
+![img.png](img.png)
