@@ -74,15 +74,21 @@ public class ProductServiceImplTest {
 
     @Test
     void testFindAllProducts() {
+        // Prepare the product list
         List<Product> products = Arrays.asList(product);
-        when(productRepository.findAll()).thenReturn(products.iterator());
 
+        // Mock the productRepository.findAll() to return the product list
+        when(productRepository.findAll()).thenReturn(products);
+
+        // Call the service method
         List<Product> allProducts = productService.findAll();
 
+        // Assert the results
         assertNotNull(allProducts, "The list of products should not be null");
         assertEquals(1, allProducts.size(), "The list should contain 1 product");
         assertEquals("Test Product", allProducts.get(0).getProductName(), "Product name should match");
     }
+
 
     @Test
     void testFindProductById() {
