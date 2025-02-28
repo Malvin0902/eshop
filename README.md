@@ -126,3 +126,208 @@ For deployment, Koyeb takes care of it automatically. Whenever there’s a push 
 In short, everything’s set up to keep things automated, from testing and integrating code to pushing updates straight to production.
 
 ![img.png](img.png)
+
+# Module 3
+# SOLID Principles in My Project
+
+## What SOLID Principles Did I Apply?
+
+In this project, I used three main SOLID principles to make things more maintainable, flexible, and easier to scale. Here’s what I used:
+
+- **Single Responsibility Principle (SRP)**
+- **Open/Closed Principle (OCP)**
+- **Liskov Substitution Principle (LSP)**
+
+### 1. **Single Responsibility Principle (SRP)**
+
+**What is SRP?**
+- SRP says that a class or module should only have one responsibility. It should only have one reason to change.
+
+**How I applied it:**
+- Originally, `ProductController.java` was doing both product and car-related logic. I split them by moving the `CarController` class (which was extending `ProductController`) into a new file, called `CarController.java`. Now, each controller has its own job.
+
+**Before (SRP Violation):**
+```java
+// ProductController.java
+@Controller
+@RequestMapping("/car")
+class CarController extends ProductController {
+    @Autowired
+    private CarServiceImpl carservice;
+
+    public CarController(ProductService service) {
+        super(service);
+    }
+}
+```
+After (SRP Applied):
+
+```java
+
+// CarController.java
+@Controller
+@RequestMapping("/car")
+public class CarController {
+    private final CarService carservice;
+
+    public CarController(CarService carService) {
+        this.carservice = carService;
+    }
+}
+```
+2. Open/Closed Principle (OCP)
+What is OCP?
+
+OCP says that classes should be open for extension, but closed for modification. This means we can add new features without changing existing code.
+How I applied it:
+
+Instead of modifying services every time I add a new repository, I created interfaces like ICarRepository.java and IProductRepository.java. This way, new repositories can be added without touching the old ones.
+Before (OCP Violation):
+
+```java
+@Repository
+public class CarRepository {
+    static int id = 0;
+    private List<Car> carData = new ArrayList<>();
+    // CRUD operations
+}
+```
+After (OCP Applied):
+
+```java
+@Repository
+public class CarRepository implements ICarRepository {
+    static int id = 0;
+    private List<Car> carData = new ArrayList<>();
+    // CRUD operations
+}
+```
+3. Liskov Substitution Principle (LSP)
+What is LSP?
+
+LSP says that you should be able to replace a parent class with a subclass without breaking the program. Subclasses should behave in a way that’s expected by their parent.
+How I applied it:
+
+I created a generic IRepository<T> interface that all repositories implement. This helps keep everything consistent and makes it easier to swap one repository for another without causing issues.
+Before (LSP Violation):
+
+```java
+public interface ICarRepository {
+    Iterator<Car> findAll();  // Returns Iterator
+}
+
+public interface IProductRepository {
+    List<Product> findAll();  // Returns List
+}
+```
+After (LSP Applied):
+
+```java
+public interface IRepository<T> {
+    T create(T entity);
+    Iterator<T> findAll();
+    T findById(String id);
+    T update(String id, T entity);
+    void delete(String id);
+}
+
+public interface ICarRepository extends IRepository<Car> {}
+public interface IProductRepository extends IRepository<Product> {}
+``` 
+Benefits of Using SOLID Principles
+1. Easier to Modify and Scale
+When you use SOLID principles, especially OCP, it becomes a lot easier to add new features without messing with the old code.
+
+Example:
+
+If I want to add a new entity (e.g., Motorcycle), I just create new interfaces and repositories (IBikeRepository, BikeRepository) without touching the existing services or repositories. This way, the old code is safe from bugs.
+Before (OCP Violation):
+
+```java
+@Repository
+public class CarRepository {
+    static int id = 0;
+    private List<Car> carData = new ArrayList<>();
+    // CRUD operations
+}
+```
+After (OCP Applied):
+
+```java
+@Repository
+public class CarRepository implements ICarRepository {
+    static int id = 0;
+    private List<Car> carData = new ArrayList<>();
+    // CRUD operations
+}
+```
+2. More Flexible Code
+LSP makes sure that all the repositories behave the same way, so you can swap them in and out without breaking anything.
+
+Before (LSP Violation):
+
+```java
+public interface ICarRepository {
+    Iterator<Car> findAll();  // Returns Iterator
+}
+
+public interface IProductRepository {
+    List<Product> findAll();  // Returns List
+}
+```
+After (LSP Applied):
+
+```java
+public interface IRepository<T> {
+    Iterator<T> findAll();
+}
+```
+3. Improved Readability and Maintainability
+SRP makes the code cleaner and easier to work with. When each class has a single responsibility, it’s easier to understand and modify.
+
+Example:
+
+Before, ProductController.java was handling both Product and Car. After SRP, each class only handles one thing.
+Before (SRP Violation):
+
+```java
+@Controller
+@RequestMapping("/car")
+class CarController extends ProductController {
+    // Handles both Product and Car logic
+}
+```
+After (SRP Applied):
+
+```java
+@Controller
+@RequestMapping("/car")
+public class CarController {
+    private final CarService carservice;
+    
+    public CarController(CarService carService) {
+        this.carservice = carService;
+    }
+}
+```
+Problems if You Don't Use SOLID Principles
+1. Harder to Extend (OCP Violation)
+Without OCP, adding new features or entities means you’ll have to modify existing code, which can lead to bugs or unexpected behavior.
+
+Example:
+
+Without OCP, if you want to add a new repository (like MotorcycleRepository), you’ll need to change existing services like CarServiceImpl and ProductServiceImpl. This increases the risk of bugs.
+2. Inconsistent and Error-Prone Code (LSP Violation)
+If repositories return different types of data, the service layer will have to handle each case separately. This creates confusion and makes the code prone to errors.
+
+Example:
+
+If findAll() in CarRepository returns an Iterator, and ProductRepository returns a List, the service layer will have to deal with them differently, leading to bugs and inconsistent behavior.
+3. Code Becomes Harder to Maintain (SRP Violation)
+Without SRP, classes get too big and do too much. This makes the code harder to understand and update.
+
+Example:
+
+If ProductController handles both Product and Car, any change to one part could break the other. SRP helps avoid that by giving each class its own job.
+Conclusion
+By applying the SOLID principles (SRP, OCP, and LSP), I’ve made the project easier to scale, modify, and maintain. These principles allow us to add new features and fix bugs without breaking existing functionality, making the code more stable and flexible.
