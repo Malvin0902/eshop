@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Repository
-public class CarRepository {
+public class CarRepository implements ICarRepository {
 
     static int id =0;
 
