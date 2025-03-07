@@ -23,6 +23,7 @@ public class OrderRepository {
         orderData.add(order);
         return order;
     }
+
     public Order findById(String id) {
         for (Order savedOrder : orderData) {
             if (savedOrder.getId().equals(id)) {
@@ -31,6 +32,7 @@ public class OrderRepository {
         }
         return null;
     }
+
     public List<Order> findAllByAuthor(String author) {
         List<Order> result = new ArrayList<>();
         for (Order savedOrder: orderData) {
