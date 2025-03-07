@@ -11,9 +11,17 @@ import java.util.Optional;
 public class PaymentRepository {
     private final List<Payment> payments = new ArrayList<>();
 
-    public void save(Payment payment) {}
+    public void save(Payment payment) {
+        payments.add(payment);
+    }
 
-    public Optional<Payment> findById(String paymentId) {return null;}
+    public Optional<Payment> findById(String paymentId) {
+        return payments.stream()
+                .filter(payment -> payment.getId().equals(paymentId))
+                .findFirst();
+    }
 
-    public List<Payment> findAll() {return null;}
+    public List<Payment> findAll() {
+        return new ArrayList<>(payments);
+    }
 }
