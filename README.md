@@ -331,3 +331,29 @@ Example:
 If ProductController handles both Product and Car, any change to one part could break the other. SRP helps avoid that by giving each class its own job.
 Conclusion
 By applying the SOLID principles (SRP, OCP, and LSP), I’ve made the project easier to scale, modify, and maintain. These principles allow us to add new features and fix bugs without breaking existing functionality, making the code more stable and flexible.
+
+# Module 4
+
+# Reflection on Test-Driven Development (TDD)
+
+## What I Learned from TDD
+I found that following the TDD (Test-Driven Development) flow has been quite useful, but there are still some areas I need to work on to make it even better. TDD requires writing tests before implementation, which helps ensure that the code we write meets certain functional goals. However, I realized that sometimes I focus too much on the technical implementation and not enough on the actual purpose behind the test itself.
+
+Going forward, I'll be more careful about identifying the purpose of each test before I write it. I'll make sure the test covers the relevant and important cases. I'll also review the tests after implementation to ensure they’re still valid as the code evolves.
+
+## Unit Tests and the F.I.R.S.T. Principles
+When I worked on the unit tests in the tutorial, I tried to follow the F.I.R.S.T. principles: **Fast, Independent, Repeatable, Self-validating, and Timely**. But after reflecting, I noticed there are a few aspects I didn’t quite get right.
+
+For example, some of my tests weren’t really **independent** because they depended on certain conditions that were hard to isolate. In the future, I need to be more careful in designing tests that are completely separate from each other. This way, every test can run on its own without affecting the others.
+
+Also, I need to make sure my tests are **fast and repeatable**, meaning they can be run multiple times without any issues. Plus, each test should give clear and easily verifiable results.
+
+## What's Next?
+To improve my testing process, here's what I plan to do:
+- Spend more time defining the actual goals of my tests before writing them.
+- Ensure that my tests cover all the important and relevant cases.
+- Make sure my tests are independent and can run on their own without being affected by others.
+- Focus on making my tests **fast** and **repeatable**.
+- Continuously review and refine my tests as my code changes.
+
+By sticking to these steps, I’m hoping to make my TDD workflow a lot more effective and efficient! 
