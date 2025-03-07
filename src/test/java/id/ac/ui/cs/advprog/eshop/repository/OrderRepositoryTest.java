@@ -35,6 +35,7 @@ class OrderRepositoryTest {
         Order order3 = new Order("e334ef40-9eff-4da8-9487-8ee697ecbf1e", products, 1708570000L, "Bambang Sudrajat");
         orders.add(order3);
     }
+
     @Test
     void testSaveCreate() {
         Order order = orders.get(1);
@@ -46,6 +47,7 @@ class OrderRepositoryTest {
         assertEquals(order.getAuthor(), findResult.getAuthor());
         assertEquals(order.getStatus(), findResult.getStatus());
     }
+
     @Test
     void testSaveUpdate() {
         Order order = orders.get(1);
@@ -60,6 +62,7 @@ class OrderRepositoryTest {
         assertEquals(order.getAuthor(), findResult.getAuthor());
         assertEquals(OrderStatus.SUCCESS.getValue(), findResult.getStatus());
     }
+
     @Test
     void testFindByIdIfIdFound() {
         for (Order order: orders) {
@@ -71,6 +74,7 @@ class OrderRepositoryTest {
         assertEquals(orders.get(1).getAuthor(), findResult.getAuthor());
         assertEquals(orders.get(1).getStatus(), findResult.getStatus());
     }
+
     @Test
     void testFindByIdIfIdNotFound() {
         for (Order order: orders) {
@@ -79,6 +83,7 @@ class OrderRepositoryTest {
         Order findResult = orderRepository.findById("zczc");
         assertNull(findResult);
     }
+
     @Test
     void testFindAllByAuthorIfAuthorCorrect() {
         for (Order order: orders) {
